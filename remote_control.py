@@ -6,6 +6,7 @@ pico_w_address = "d8:3a:dd:8c:14:9d"
 # The UUID of the service on the Pico W (must match the one used in the Pico W code)
 # Convert the UUID string to a byte string format
 service_uuid = b'\x12\x34\x56\x78\x12\x34\x56\x78\x12\x34\x56\x78\x9a\xbc\xde\xf0'
+service_uuid = service_uuid[::-1]
 
 # Connect to the Pico W
 p = Peripheral(pico_w_address)
