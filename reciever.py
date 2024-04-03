@@ -8,6 +8,11 @@ pin0 = Pin(0, Pin.OUT)
 pin1 = Pin(1, Pin.OUT)
 pin2 = Pin(2, Pin.OUT)
 pin3 = Pin(3, Pin.OUT)
+pin4 = Pin(4, Pin.OUT)
+pin5 = Pin(5, Pin.OUT)
+pin6 = Pin(6, Pin.OUT)
+pin7 = Pin(7, Pin.OUT)
+stepper = Stepper(pin0, pin1, pin2, pin3)
 
 
 print("Spin stepper motor...")
@@ -21,8 +26,13 @@ led.off()
 SERVICE_UUID = UUID("f0debc9a-7856-3412-7856-341278563412")
 CHAR_UUID = UUID("f1debc9a-7856-3412-7856-341278563412")
 
+turn = False
+forward = False
+backward = False
+
 
 def ble_irq(event, data):
+    global turn
     print("BLE event:", event)
     print("Data:", data)
     if event == 1:
@@ -48,16 +58,55 @@ def ble_irq(event, data):
         elif msg == "off":
             print("LED OFF")
             led.off()
-        elif msg == "Right": 
-            stepper.set_steps(1000)
+        elif msg == "Right pressed": 
+            stepper.set_steps(50)
             stepper.set_clockwise(1)
             stepper.run()
+            turn = True
+
+        elif msg == "Right released":
             stepper.stop()
-        elif msg == "Left":
-            stepper.set_steps(1000)
+            turn = False
+         
+        elif msg == "Left pressed":
+            stepper.set_steps(50)
             stepper.set_clockwise(0)
             stepper.run()
+            turn = True
+        
+        elif msg == "Left released":
             stepper.stop()
+            turn = False
+
+        elif msg == "Up pressed":
+            pin4.off()
+            pin5.on()
+            pin6.on()
+            pin7.off()
+
+        elif msg == "Up released":
+            pin4.off()
+            pin5.off()
+            pin6.off()
+            pin7.off()
+
+
+        elif msg == "Down pressed":
+            pin4.on()
+            pin5.off()
+            pin6.off()
+            pin7.on()
+        
+        elif msg == "Down released":
+            pin4.off()
+            pin5.off()
+            pin6.off()
+            pin7.off()
+            
+
+
+
+        
 
 
 
@@ -102,4 +151,7 @@ ble.gap_advertise(100, adv_payload)
 print("BLE advertising...")
 
 while True:
-    time.sleep(1)
+    if turn:
+        stepper.run()
+    else:
+        time.sleep(0.1)
