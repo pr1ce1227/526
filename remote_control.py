@@ -5,7 +5,7 @@ pico_w_address = "d8:3a:dd:8c:14:9d"
 
 # The UUID of the service on the Pico W (must match the one used in the Pico W code)
 # Convert the UUID string to a byte string format
-service_uuid = bytes.fromhex('1234567812345678123456789abcdef0')
+service_uuid = b'\x12\x34\x56\x78\x12\x34\x56\x78\x12\x34\x56\x78\x9a\xbc\xde\xf0'
 
 # Connect to the Pico W
 p = Peripheral(pico_w_address)
@@ -28,7 +28,7 @@ if service is None:
 
 # Find the characteristic (replace with the actual UUID of the characteristic)
 # Convert the UUID string to a byte string format
-char_uuid = bytes.fromhex('1234567812345678123456789abcdef1')
+char_uuid = b'\x12\x34\x56\x78\x12\x34\x56\x78\x12\x34\x56\x78\x9a\xbc\xde\xf1'
 
 # Get the characteristic
 char = None

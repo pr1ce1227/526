@@ -3,6 +3,7 @@ import time
 from machine import Pin
 import ubinascii
 
+
 led = Pin(15, Pin.OUT)
 
 led.off()
@@ -30,6 +31,7 @@ def ble_irq(event, data):
             conn_handle, attr_handle, value = data
             # Handle the received value (e.g., print it)
             print("Received value:", bytes(value))
+
         except:
             conn_handle, attr_handle = data
             # Normally, you would handle the received value here, but it seems not to be provided in this case
@@ -61,7 +63,15 @@ device_name = "Caleb Pico"
 name_bytes = bytes(device_name, 'utf-8')
 
 # Advertise the service with the device name and service UUID
-ble.gap_advertise(100, b'\x02\x01\x06' + bytes([len(name_bytes) + 1, 0x09]) + name_bytes)
+adv_payload = b'\x02\x01\x06'  # Flags (general discoverable, no BR/EDR)
+adv_payload += bytes([len(name_bytes) + 1, 0x09]) + name_bytes  # Complete Local Name
+
+# Add the service UUID to the advertising payload
+service_uuid_length = len(SERVICE_UUID)
+adv_payload += bytes([service_uuid_length + 1, 0x03]) + SERVICE_UUID  # Incomplete List of 16-bit Service Class UUIDs
+
+# Start advertising
+ble.gap_advertise(100, adv_payload)
 
 print("BLE advertising...")
 
