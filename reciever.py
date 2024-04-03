@@ -9,8 +9,8 @@ led = Pin(15, Pin.OUT)
 led.off()
 
 # UUIDs for the service and characteristic (as byte strings)
-SERVICE_UUID = b'\x12\x34\x56\x78\x12\x34\x56\x78\x12\x34\x56\x78\x9a\xbc\xde\xf0'
-CHAR_UUID = b'\x12\x34\x56\x78\x12\x34\x56\x78\x12\x34\x56\x78\x9a\xbc\xde\xf1'
+SERVICE_UUID = UUID("f0debc9a-7856-3412-7856-341278563412")
+CHAR_UUID = UUID("f1debc9a-7856-3412-7856-341278563412")
 
 
 # BLE event handler
