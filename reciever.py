@@ -33,6 +33,8 @@ backward = False
 
 def ble_irq(event, data):
     global turn
+    global forward
+    global backward
     print("BLE event:", event)
     print("Data:", data)
     if event == 1:
@@ -79,29 +81,48 @@ def ble_irq(event, data):
             turn = False
 
         elif msg == "Up pressed":
-            pin4.off()
-            pin5.on()
-            pin6.on()
-            pin7.off()
+            if backward:
+                pin4.off()
+                pin5.off()
+                pin6.off()
+                pin7.off()
+                backward = False
+            else:
+                pin4.off()
+                pin5.on()
+                pin6.on()
+                pin7.off()
+                forward = True
+          
 
         elif msg == "Up released":
-            pin4.off()
-            pin5.off()
-            pin6.off()
-            pin7.off()
+            # pin4.off()
+            # pin5.off()
+            # pin6.off()
+            # pin7.off()
+            pass
 
 
         elif msg == "Down pressed":
-            pin4.on()
-            pin5.off()
-            pin6.off()
-            pin7.on()
+            if forward:
+                pin4.off()
+                pin5.off()
+                pin6.off()
+                pin7.off()
+                forward = False
+            else:
+                pin4.on()
+                pin5.off()
+                pin6.off()
+                pin7.on()
+                backward = True
         
         elif msg == "Down released":
-            pin4.off()
-            pin5.off()
-            pin6.off()
-            pin7.off()
+            # pin4.off()
+            # pin5.off()
+            # pin6.off()
+            # pin7.off()
+            pass
             
 
 
